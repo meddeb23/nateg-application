@@ -1,0 +1,39 @@
+{
+  "name": "wasalny",
+  "version": "1.0.0",
+  "description": "Transportation app",
+  "main": "server.js",
+  "scripts": {
+    "server": "nodemon server/server.js",
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meddeb23/nateg-application.git"
+  },
+  "author": "NATEG",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meddeb23/nateg-application/issues"
+  },
+  "homepage": "https://github.com/meddeb23/nateg-application#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "debug": "^4.3.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "helmet": "^4.4.1",
+    "joi": "^14.0.4",
+    "joi-objectid": "^3.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^5.11.19",
+    "morgan": "^1.10.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
