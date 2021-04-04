@@ -36,6 +36,7 @@ router.post("/", async (req, res) => {
     name,
     email,
     password: hash,
+    isAdmin: true,
   });
 
   user = await user.save();
