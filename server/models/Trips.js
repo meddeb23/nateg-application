@@ -1,19 +1,21 @@
 const mongoose = require("mongoose");
 
 const tripSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 50,
-  },
+  // name: {
+  //   type: String,
+  //   required: true,
+  //   minlength: 5,
+  //   maxlength: 50,
+  // },
   price: {
     type: Number,
     required: true,
   },
-  station: [{ type: Schema.Types.ObjectId, ref: "Station", required: true }],
+  station: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "Station", required: true },
+  ],
   depart_time: {
-    type: date,
+    type: Date,
     required: true,
   },
   arrival_time: {

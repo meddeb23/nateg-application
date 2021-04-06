@@ -1,14 +1,15 @@
 const express = require("express");
 const Joi = require("joi");
 const router = express.Router();
-const Station = require("../../models/Station");
+const { Station } = require("../../models/Station");
 const admin = require("../../middleware/admin");
 
 // @route   GET api/v1/station
 // @desc    Get Station
 // @access  admin
 router.get("/", admin, async (req, res) => {
-  res.send("Get all Station 😄");
+  const all_station = await Station.find();
+  res.json(all_station);
 });
 
 // @route   POST api/v1/station
@@ -17,10 +18,9 @@ router.get("/", admin, async (req, res) => {
 router.post("/", admin, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).json(error);
-  console.log(req.body);
-
-  // const { } = req.body
-  res.send("POST Station 😄");
+  const newStation = new Station(req.body);
+  const savedStation = await newStation.save();
+  return res.json({ station: savedStation });
 });
 
 // @route   PATCH api/v1/station
