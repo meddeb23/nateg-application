@@ -1,6 +1,7 @@
 const express = require("express");
+const Joi = require("joi");
 const router = express.Router();
-
+const Station = require("../../models/Station");
 const admin = require("../../middleware/admin");
 
 // @route   GET api/v1/station
@@ -14,6 +15,11 @@ router.get("/", admin, async (req, res) => {
 // @desc    Add Station
 // @access  admin
 router.post("/", admin, async (req, res) => {
+  const { error } = validate(req.body);
+  if (error) return res.status(400).json(error);
+  console.log(req.body);
+
+  // const { } = req.body
   res.send("POST Station 😄");
 });
 
@@ -41,5 +47,17 @@ router.get("/:id", admin, async (req, res) => {
   const { id } = req.params;
   res.send(`get Station with id = ${id} 😄`);
 });
+
+const validate = (req) => {
+  const schema = {
+    name: Joi.string().min(5).max(255).required(),
+    address: Joi.string().min(5).max(255).required(),
+    location: Joi.object({
+      type: Joi.string().min(5).max(255).required(),
+      coordinates: Joi.array().items(Joi.number().greater(0).required()),
+    }),
+  };
+  return Joi.validate(req, schema);
+};
 
 module.exports = router;
