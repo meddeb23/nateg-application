@@ -17,6 +17,7 @@ const validateTripSearch = (query) => {
       .max(10)
       .required()
       .allow("train", "bus"),
+    depart_date: Joi.date(),
   };
 
   return Joi.validate(query, schema);
@@ -29,7 +30,7 @@ router.get("/search", async (req, res) => {
   debug(req.query);
   const { error } = validateTripSearch(req.query);
   if (error) return res.status(400).json(error.details[0].message);
-  const { origin, destination, type_of_transport } = req.query;
+  const { origin, destination, type_of_transport, depart_date } = req.query;
 
   const originTrip = await Station.findOne({ name: origin });
   if (!originTrip) return res.status(400).json({ message: "invalid origin" });
@@ -37,10 +38,13 @@ router.get("/search", async (req, res) => {
   if (!destinationTrip)
     return res.status(400).json({ message: "invalid destination" });
 
-  const all_trips = await Trip.find({
+  let query = {
     station: [originTrip._id, destinationTrip._id],
     type_of_transport,
-  }).populate("station");
+  };
+  if (depart_date) query.depart_date = { $gte: new Date(depart_date) };
+
+  const all_trips = await Trip.find(query).populate("station");
 
   res.json(all_trips);
 });
@@ -101,8 +105,8 @@ const validate = (req) => {
   const schema = {
     price: Joi.number().greater(0).required(),
     station: Joi.array().items(Joi.string().min(5).max(255).required()),
-    depart_time: Joi.date().required(),
-    arrival_time: Joi.date().required(),
+    depart_date: Joi.date().required(),
+    arrival_date: Joi.date().required(),
     distance: Joi.number().greater(0).required(),
     type_of_transport: Joi.allow("train", "bus"),
   };
@@ -112,8 +116,8 @@ const validate = (req) => {
 const validate_update = (req) => {
   const schema = {
     price: Joi.number().greater(0),
-    depart_time: Joi.date(),
-    arrival_time: Joi.date(),
+    depart_date: Joi.date(),
+    arrival_date: Joi.date(),
   };
   return Joi.validate(req, schema);
 };

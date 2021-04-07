@@ -14,11 +14,11 @@ const tripSchema = new mongoose.Schema({
   station: [
     { type: mongoose.Schema.Types.ObjectId, ref: "Station", required: true },
   ],
-  depart_time: {
+  depart_date: {
     type: Date,
     required: true,
   },
-  arrival_time: {
+  arrival_date: {
     type: Date,
     required: true,
   },
